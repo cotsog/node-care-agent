@@ -1,0 +1,3 @@
+# do not include readable sources in the npm module
+src
+build

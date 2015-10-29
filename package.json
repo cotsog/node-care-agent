@@ -1,0 +1,52 @@
+{
+  "name": "node-care-agent",
+  "version": "0.0.1",
+  "description": "The node.care Agent which should be required by every node process you want to monitor.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "grunt test",
+    "report": "open test/coverage/reports/lcov-report/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elgubenis/node-care-agent.git"
+  },
+  "author": "Linus Gubenis",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/elgubenis/node-care-agent/issues"
+  },
+  "homepage": "https://github.com/elgubenis/node-care-agent",
+  "dependencies": {
+    "engine.io": "^1.5.4",
+    "findup": "^0.1.5",
+    "findup-sync": "^0.3.0",
+    "heapdump-nosignal": "^0.3.7",
+    "md5": "^2.0.0",
+    "memwatch-next": "^0.2.9",
+    "npm": "^3.3.9",
+    "npm-check-updates": "^2.3.4",
+    "socket.io": "^1.3.7",
+    "socket.io-client": "^1.3.7",
+    "underscore": "^1.8.3",
+    "usage": "^0.7.1",
+    "v8-profiler": "^5.3.2"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-iced-coffee": "^0.7.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-uglify": "^0.9.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-env": "^0.4.4",
+    "grunt-istanbul": "^0.6.1",
+    "grunt-mocha-test": "^0.12.7",
+    "iced-coffee-script": "^108.0.8",
+    "jit-grunt": "^0.9.1",
+    "mocha": "^2.3.0",
+    "should": "^7.1.0"
+  }
+}
