@@ -7,10 +7,16 @@ heapdiffer = require './modules/heapdiffer'
 heapdumper = require './modules/heapdumper'
 cpuprofiler = require './modules/cpuprofiler'
 npm = require './modules/npm'
+gitPullRunner = require './modules/gitpull'
 
 module.exports = (options) ->
   io = require('socket.io')(options.listenTo)
   interval = options.options.interval
+  ###
+    istanbul ignore next
+  ###
+  if interval < 1000
+    interval = 1000
 
   io.on 'connection', (socket) ->
 
@@ -22,6 +28,7 @@ module.exports = (options) ->
       socket.close()
 
   usageRunner()
+  gitPullRunner(io)
   return io
 
 usageRunner = ->
