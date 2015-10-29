@@ -1,3 +1,4 @@
+_ = require 'underscore'
 npm = require 'npm'
 findup = require 'findup-sync'
 pkg = require(findup('package.json'))
@@ -13,11 +14,25 @@ module.exports = (socket) ->
 
         outdated = normalize(data)
 
+        for moduleName, version of dependencies
+          out = outdated[moduleName] or {}
+          dependencies[moduleName] =
+            version: version
+            current: out.current
+            wanted: out.wanted
+            latest: out.latest
+
+        for moduleName, version of devDependencies
+          out = outdated[moduleName] or {}
+          devDependencies[moduleName] =
+            version: version
+            current: out.current
+            wanted: out.wanted
+            latest: out.latest
+
         socket.emit 'module:npm:packages',
           dependencies: pkg.dependencies
           devDependencies: pkg.devDependencies
-          outdated: outdated
-
 
 normalize = (arr) ->
   json = {}
