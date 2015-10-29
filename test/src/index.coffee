@@ -21,6 +21,8 @@ nca({
     interval: 0
 })
 
+skipsome = false
+
 describe 'node.care Agent', ->
 
   describe 'general start and connection routines', ->
@@ -51,7 +53,7 @@ describe 'node.care Agent', ->
       client.emit 'PING'
 
     it 'sends its usage statistics', (done) ->
-      @skip()
+      if skipsome then @skip()
 
       client.once 'stats', (stats) ->
         done()
@@ -61,7 +63,7 @@ describe 'node.care Agent', ->
     describe 'heapdiff', ->
 
       it 'starts a heapdiff', (done) ->
-        @skip()
+        if skipsome then @skip()
         @timeout(5000)
 
         # if the agent responds with a started-status
@@ -73,7 +75,7 @@ describe 'node.care Agent', ->
 
       it 'fails to start a heapdiff, because there is already a started one', (done) ->
 
-        @skip()
+        if skipsome then @skip()
 
         # if the agent responds with a start-failed-status
         client.on 'module:heapdiff:start-failed', ->
@@ -84,7 +86,7 @@ describe 'node.care Agent', ->
 
       it 'stops a running heapdiff and returns the heapdiff', (done) ->
 
-        @skip()
+        if skipsome then @skip()
 
         @timeout(5000)
 
@@ -98,7 +100,7 @@ describe 'node.care Agent', ->
 
       it 'fails to stop a not-running heapdiff, because it was already stopped', (done) ->
 
-        @skip()
+        if skipsome then @skip()
 
         # if the agent responds with a stop-failed-status
         client.on 'module:heapdiff:stop-failed', ->
@@ -111,7 +113,7 @@ describe 'node.care Agent', ->
 
       it 'gets a heapdump', (done) ->
 
-        @skip()
+        if skipsome then @skip()
 
         @timeout(5000)
 
@@ -167,28 +169,107 @@ describe 'node.care Agent', ->
         # sends another profiler stop request
         client.emit 'module:profiler:stop'
 
-    describe 'npm modules installed', ->
+    describe 'npm', ->
 
-      it 'responds with the list of modules used', (done) ->
-        @skip()
+      it 'responds with the list of modules used and their latest version', (done) ->
+        if skipsome then @skip()
         @timeout(10000)
 
         # if the agent responds with updates
         client.on 'module:npm:packages', (result) ->
-          console.log result
           assert.deepEqual Object.keys(result), ['dependencies', 'devDependencies']
           done()
 
         # sends a request for a list of modules which needs an update
         client.emit 'module:npm:packages'
 
+      it 'installs a new module', (done) ->
+
+        if skipsome then @skip()
+
+        @timeout(10000)
+
+        client.on 'module:npm:installed', (module) ->
+          if module is 'user-home'
+            done()
+
+        # send a request for isntalling a new module
+        client.emit 'module:npm:install', 'user-home'
+
+      it 'uninstall a module', (done) ->
+
+        if skipsome then @skip()
+
+        client.on 'module:npm:uninstalled', (module) ->
+          if module is 'user-home'
+            done()
+
+        # send a request for removing a module
+        client.emit 'module:npm:uninstall', 'user-home'
+
+      it 'install new modules (non-specific)', (done) ->
+
+        if skipsome then @skip()
+
+        @timeout(600000)
+
+        # when the agent responds
+        client.on 'module:npm:installed-all', ->
+          done()
+
+        # request the agent to install all modules
+        client.emit 'module:npm:install-all'
+
+      it 'updated all modules (non-specific)', (done) ->
+
+        if skipsome then @skip()
+
+        @timeout(600000)
+
+        # when the agent responds
+        client.on 'module:npm:updated-all', ->
+          done()
+
+        # request the agent to install all modules
+        client.emit 'module:npm:update-all'
+
     describe 'git', ->
 
-      it 'out of sync', (done) ->
+      it 'detects synced repository', (done) ->
 
-        fs.writeFileSync './mock.txt', Math.random()*Math.random()*Math.random()
+        @skip()
+
+        # if the agent responds with sync
+        client.on 'module:git:synced', ->
+          done()
+
+      it 'detects out of sync repository', (done) ->
+
+        @skip()
 
         # if the agent responds with out-of-sync
-        client.on 'module:git:out-of-sync', ->
+        client.once 'module:git:out-of-sync', ->
           done()
+
+      it 'responds with the git status response', (done) ->
+
+        client.once 'module:git:status', (result) ->
+          done()
+
+        client.emit 'module:git:status'
+
+    describe 'process details', ->
+
+      it 'fetches details', (done) ->
+
+        # if the agent responds with details
+        client.once 'module:details:response', (result) ->
+          assert.deepEqual Object.keys(result), ['git', 'process', 'pkg']
+          done()
+
+        # request details
+        client.emit 'module:details:request'
+
+
+
 

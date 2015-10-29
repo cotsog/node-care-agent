@@ -8,6 +8,8 @@ heapdumper = require './modules/heapdumper'
 cpuprofiler = require './modules/cpuprofiler'
 npm = require './modules/npm'
 gitPullRunner = require './modules/gitpull'
+details = require './modules/details'
+git = require './modules/git'
 
 module.exports = (options) ->
   io = require('socket.io')(options.listenTo)
@@ -48,3 +50,5 @@ _handleSocket = (socket) ->
   heapdumper(socket)
   cpuprofiler(socket)
   npm(socket)
+  details(socket)
+  git(socket)
