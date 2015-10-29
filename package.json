@@ -1,6 +1,6 @@
 {
   "name": "node-care-agent",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The node.care Agent which should be required by every node process you want to monitor.",
   "main": "dist/index.js",
   "scripts": {

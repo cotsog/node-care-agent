@@ -10,6 +10,7 @@ npm = require './modules/npm'
 gitPullRunner = require './modules/gitpull'
 details = require './modules/details'
 git = require './modules/git'
+processor = require './modules/processor'
 
 module.exports = (options) ->
   io = require('socket.io')(options.listenTo)
@@ -52,3 +53,4 @@ _handleSocket = (socket) ->
   npm(socket)
   details(socket)
   git(socket)
+  processor(socket)

@@ -21,7 +21,7 @@ nca({
     interval: 0
 })
 
-skipsome = false
+skipsome = true
 
 describe 'node.care Agent', ->
 
@@ -258,17 +258,28 @@ describe 'node.care Agent', ->
 
         client.emit 'module:git:status'
 
-    describe 'process details', ->
+    describe 'process', ->
 
-      it 'fetches details', (done) ->
+      describe 'get details about the process', ->
 
-        # if the agent responds with details
-        client.once 'module:details:response', (result) ->
-          assert.deepEqual Object.keys(result), ['git', 'process', 'pkg']
-          done()
+        it 'fetches details', (done) ->
 
-        # request details
-        client.emit 'module:details:request'
+          # if the agent responds with details
+          client.once 'module:details:response', (result) ->
+            assert.deepEqual Object.keys(result), ['git', 'process', 'pkg']
+            done()
+
+          # request details
+          client.emit 'module:details:request'
+
+        it 'restarts the process', (done) ->
+
+          @skip() # LOL, hehe .. funneh ... how would the test work when restarting?? ... please ... come on!
+
+          client.once 'module:process:restarting', ->
+            done()
+
+          client.emit 'module:process:restart'
 
 
 
