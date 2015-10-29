@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "4.2"
+  - 4.2
 before_install:
   - npm install -g mocha grunt grunt-cli codeclimate-test-reporter
   - npm install
@@ -15,4 +15,4 @@ notifications:
 sudo: false
 addons:
   code_climate:
-    repo_token: ''
+    repo_token: 4948d3593a734952fe77e2d85447d4cc6c730046fc0806ad789b695bb03ff2c9
