@@ -10,6 +10,7 @@ before_install:
   - npm install
   - grunt build
   - grunt build-test
+  - export CXX="g++-4.9"
 script:
   - grunt test
 after_script:
@@ -18,5 +19,12 @@ notifications:
   email: false
 sudo: false
 addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - build-essential
+      - gcc-4.9
+      - g++-4.9
   code_climate:
     repo_token: 4948d3593a734952fe77e2d85447d4cc6c730046fc0806ad789b695bb03ff2c9
