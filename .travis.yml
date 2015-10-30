@@ -6,11 +6,12 @@ node_js:
   - 0.11
   - 0.10
 before_install:
+  - export CC="gcc-4.9" CXX="g++-4.9"
   - npm install -g mocha grunt grunt-cli codeclimate-test-reporter
   - npm install
   - grunt build
   - grunt build-test
-  - export CXX="g++-4.9"
+
 script:
   - grunt test
 after_script:
